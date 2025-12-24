@@ -1,5 +1,5 @@
 import csv
-with open("mobile_production.csv", mode = "r") as file:
+with open("mobile_products.csv", mode = "r") as File:
     csvFile = csv.DictReader(File)
-    forline in csvFile
-    print(lines)
+    for line in csvFile:
+        print(line)
