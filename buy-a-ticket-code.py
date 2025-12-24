@@ -63,35 +63,37 @@ def view_categories():
     except FileNotFoundError:
         print("Error: 'mobile_products.csv' file not found.")
 
+# --- User Interface and Authentication (Main Loop) ---
 
+# This loop runs continuously until the user decides to exit
 while True:
     print("\n--- Main Menu ---")
     print("1. Guest Mode")
     print("2. Administrator Mode")
     print("3. Exit Program")
     
-    
+    # Get user input
     choice = input("Enter your choice (1, 2, or 3): ")
 
     if choice == '1':
-       
+        # Run the guest functionality defined in the function above
         view_categories()
         
     elif choice == '2':
-        
+        # Prompt for password if admin is chosen
         password = input("Enter administrator password: ")
-        
+        # Check against the required password
         if password == "password01":
             print("\n*** Access Granted: Administrator ***")
-            
+            # This is where you would put admin-specific functions
         else:
             print("\nAccess Denied: Incorrect password.")
             
     elif choice == '3':
-        
+        # Stop the entire program completely using the sys module
         print("Exiting program.")
         sys.exit() 
         
     else:
-        
+        # Handle invalid input gracefully
         print("\nInvalid choice. Please enter 1, 2, or 3.")
