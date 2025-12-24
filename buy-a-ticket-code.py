@@ -1,57 +1,58 @@
 import csv
+import sys 
 
-# Class Definition 
-# This class defines how to store each category's data cleanly
-class Category:
-    # __init__ is the constructor that runs when a new object is created
-    # 'self' refers to the specific instance of the object being created
-    def __init__(self, code, title, desc):
-        self.code = code
-        self.title = title
-        self.description = desc
 
-    # Method to retrieve the category code
-    def get_code(self):
-        return self.code
+def view_categories():
+    print("\n--- Displaying Categories (Guest View) ---")
+    categoryList = []
+    categoryObjectList = []
+    code = 0
 
-    # Method to retrieve the category title
-    def get_title(self):
-        return self.title
+    try:
+       
+        with open('mobile_products.csv', mode='read') as file: 
+            csvFile = csv.DictReader(file)
+            
+            for lines in csvFile: 
+               
+                if lines["category_title"] not in categoryList: 
+                    categoryList.append(lines["category_title"])
+                    
+                    thisCat = Category(code, lines["category_title"], lines["category_description"]) 
+                    categoryObjectList.append(thisCat)
+                    code += 1
 
-    # Method to retrieve the category description
-    def get_description(self):
-        return self.description
+        
+        for data in categoryList:
+            
+            print(data.getCode(), " ", data.getdescription)
+            
+    except FileNotFoundError:
+        print("Error: 'mobile_products.csv' file not found.")
 
-# Main Program Logic
 
-categoryList = []        # Tracks names of categories seen to avoid duplicates
-categoryObjectList = []  # Stores the actual Category objects
-code = 0                 # Counter for unique category IDs
 
-# Open the CSV file in read mode and ensure it closes automatically
-with open('mobile_products.csv', mode='r') as file:
-    # Use DictReader to read rows as dictionaries (header as keys)
-    csvFile = csv.DictReader(file)
+while True:
+    print("\n--- Main Menu ---")
+    print("1. Guest Mode")
+    print("2. Administrator Mode")
+    print("3. Exit Program")
     
-    # Iterate through every row in the CSV file
-    for line in csvFile: 
-        # Check if the title is already in our tracking list
-        if line["category_title"] not in categoryList:
-            # If new, add the name to the tracking list
-            categoryList.append(line["category_title"])
-            
-            # Create a new Category object with data from the current row
-            thisCat = Category(code, line["category_title"], line["category_description"])
-            
-            # Add the new object instance to our main object list
-            categoryObjectList.append(thisCat)
-            
-            # Increment the ID code for the next unique category
-            code += 1
+    choice = input("Enter your choice (1, 2, or 3): ")
 
-# Output 
-
-# Loop through the list of Category objects we collected
-for data in categoryObjectList:
-    # Print the ID and description using the getter methods defined in the class
-    print(data.get_code(), " ", data.get_description())
+    if choice == '1':
+        view_categories()
+        
+    elif choice == '2':
+        password = input("Enter administrator password: ")
+        
+        if password = "password01": 
+            print("\n*** Access Granted: Administrator ***")
+        else:
+            print("\nAccess Denied: Incorrect password.")
+            
+    elif choice == '3':
+        break
+        
+    else:
+        print("\nInvalid choice. Please enter 1, 2, or 3.")
