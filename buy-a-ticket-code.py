@@ -66,7 +66,7 @@ def view_categories():
         for data in categoryObjectList:
             # Print the data using the same spacing markers as the header to keep columns aligned
             # get_title() is added here to populate the new Title column
-            print(f"{data.get_code():<5} {data.get_title():<20} {data.get_description()}")
+            print(f"{data.get_code():<5} {data.get_title():<25} {data.get_description()}")
             
     except FileNotFoundError:
         print("Error: 'mobile_products.csv' file not found.")
