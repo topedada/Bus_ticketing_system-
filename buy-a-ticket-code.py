@@ -65,13 +65,15 @@ def view_categories():
         # Loop through the list of Category objects we collected
         for data in categoryObjectList:
             # Print the data using the same spacing markers as the header to keep columns aligned
+            # get_title() is added here to populate the new Title column
             print(f"{data.get_code():<5} {data.get_title():<25} {data.get_description()}")
             
     except FileNotFoundError:
         # Handle missing CSV file gracefully
         print("Error: 'mobile_products.csv' file not found.")
 
-# Updated Buy Ticket Function with Logical Error in ID Selection
+# Updated Buy Ticket Function
+# This function allows the user to buy a ticket by first selecting a category
 def buy_ticket():
     print("\n--- Buy a Ticket ---")
 
@@ -80,13 +82,13 @@ def buy_ticket():
 
     # Ask the user which category they want
     try:
+        # Prompt user for category ID
         category_id = int(input("\nEnter the category ID you want to view: "))
 
-        # LOGICAL ERROR: The program always selects category 0 instead of the one user picked
-        # Even if the user enters a valid ID, it ignores it
-        selected_category = 0  # <-- Logical error: should use category_id
+        # NOTE: You will connect this check to your real category list later.
+        print(f"\nYou selected category ID: {category_id}")
 
-        print(f"\nYou selected category ID: {selected_category}")
+        # Placeholder message for future top-up integration
         print("\n(Top-Up options will be added after merging the top-up branch.)")
 
     except ValueError:
@@ -94,27 +96,35 @@ def buy_ticket():
         print("Invalid input. Please enter a number.")
 
 # User Interface and Authentication (Main Loop)
+# This loop runs continuously until the user decides to exit
 while True:
     print("\n--- Main Menu ---")
     print("1. Guest Mode")
     print("2. Administrator Mode")
     print("3. Exit Program")
     
+    # Get user input
     choice = input("Enter your choice (1, 2, or 3): ")
 
     if choice == '1':
+        # Run the buy_ticket function instead of just viewing categories
         buy_ticket()
         
     elif choice == '2':
+        # Prompt for password if admin is chosen
         password = input("Enter administrator password: ")
+        # Check against the required password
         if password == "password01":
             print("\n*** Access Granted: Administrator ***")
+            # Admin-specific functions can go here
         else:
             print("\nAccess Denied: Incorrect password.")
             
     elif choice == '3':
+        # Stop the entire program completely using the sys module
         print("Exiting program.")
         sys.exit() 
         
     else:
+        # Handle invalid input gracefully
         print("\nInvalid choice. Please enter 1, 2, or 3.")
