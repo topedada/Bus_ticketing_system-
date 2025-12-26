@@ -55,11 +55,11 @@ def view_categories():
                     # Increment the ID code for the next unique category
                     code += 1
 
-        #  Displaying Headings 
-        # Define the header labels with fixed-width spacing (:<5 and :<20) to create columns
-        header = f"{'ID':<5} {'Title':<20} {'Description'}"
+        #Tabular Formatting
+        #This line defines and prints the headers with specific column widths 
+        header = f"{'ID':<5} {'Category Title':<25} {'Category Description'}"
         print(header)
-        # Print a line of dashes exactly matching the length of the header
+        #This line adds a separator based on the header length
         print("-" * len(header))
 
         # Loop through the list of Category objects we collected
@@ -71,7 +71,7 @@ def view_categories():
     except FileNotFoundError:
         print("Error: 'mobile_products.csv' file not found.")
 
-# User Interface and Authentication (Main Loop)
+# --- User Interface and Authentication (Main Loop) ---
 
 # This loop runs continuously until the user decides to exit
 while True:
