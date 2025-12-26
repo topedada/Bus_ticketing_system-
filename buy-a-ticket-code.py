@@ -6,10 +6,11 @@ import sys # Import the sys module to allow for clean exiting of the program
 class Category:
     # __init__ is the constructor that runs when a new object is created
     # 'self' refers to the specific instance of the object being created
-    def __init__(self, code, title, desc):
+    def __init__(self, code, title, desc, price):
         self.code = code
         self.title = title
         self.description = desc
+        self.price = price
 
     # Method to retrieve the category code
     def get_code(self):
@@ -22,6 +23,9 @@ class Category:
     # Method to retrieve the category description
     def get_description(self):
         return self.description
+
+    def get_price(self):
+        return self.price 
 
 # Main Program Logic Function (Guest Mode)
 # This function handles the core logic of reading the file and printing categories
@@ -47,7 +51,7 @@ def view_categories():
                     categoryList.append(line["category_title"])
                     
                     # Create a new Category object with data from the current row
-                    thisCat = Category(code, line["category_title"], line["category_description"])
+                    thisCat = Category(code, line["category_title"], line["category_description"],float(line.get("category_price", 0)))
                     
                     # Add the new object instance to our main object list
                     categoryObjectList.append(thisCat)
@@ -57,7 +61,7 @@ def view_categories():
 
         # Tabular Formatting
         # This line defines and prints the headers with specific column widths 
-        header = f"{'ID':<5} {'Category Title':<25} {'Category Description'}"
+        header = f"{'ID':<5} {'Category Title':<25} {'Category Description':<40} {'Price'}"
         print(header)
         # This line adds a separator based on the header length
         print("-" * len(header))
@@ -66,7 +70,8 @@ def view_categories():
         for data in categoryObjectList:
             # Print the data using the same spacing markers as the header to keep columns aligned
             # get_title() is added here to populate the new Title column
-            print(f"{data.get_code():<5} {data.get_title():<25} {data.get_description()}")
+            print(f"{data.get_code():<5} {data.get_title():<25} {data.get_description():<40} ${data.get_price():.2f}")
+
             
     except FileNotFoundError:
         # Handle missing CSV file gracefully
