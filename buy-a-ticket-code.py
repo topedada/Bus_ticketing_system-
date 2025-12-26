@@ -61,7 +61,7 @@ def view_categories():
 
         # Tabular Formatting
         # This line defines and prints the headers with specific column widths 
-        header = f"{'ID':<5} {'Category Title':<25} {'Category Description':<40} {'Price'}"
+        header = f"| {'ID':<5} | {'Category Title':<25} | {'Category Description':<40} | {'Price':<8} |"
         print(header)
         # This line adds a separator based on the header length
         print("-" * len(header))
@@ -70,7 +70,7 @@ def view_categories():
         for data in categoryObjectList:
             # Print the data using the same spacing markers as the header to keep columns aligned
             # get_title() is added here to populate the new Title column
-            print(f"{data.get_code():<5} {data.get_title():<25} {data.get_description():<40} ${data.get_price():.2f}")
+            print(f"| {data.get_code():<5} | {data.get_title():<25} | {data.get_description():<40} | ${data.get_price():<7.2f}")
 
             
     except FileNotFoundError:
