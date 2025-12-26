@@ -1,7 +1,7 @@
 import csv
 import sys # Import the sys module to allow for clean exiting of the program
 
-# --- Class Definition ---
+# Class Definition 
 # This class defines how to store each category's data cleanly
 class Category:
     # __init__ is the constructor that runs when a new object is created
@@ -23,7 +23,7 @@ class Category:
     def get_description(self):
         return self.description
 
-# --- Main Program Logic Function (Guest Mode) ---
+# Main Program Logic Function (Guest Mode)
 # This function handles the core logic of reading the file and printing categories
 def view_categories():
     print("\n--- Displaying Categories (Guest View) ---")
@@ -55,15 +55,23 @@ def view_categories():
                     # Increment the ID code for the next unique category
                     code += 1
 
+        #  Displaying Headings 
+        # Define the header labels with fixed-width spacing (:<5 and :<20) to create columns
+        header = f"{'ID':<5} {'Title':<20} {'Description'}"
+        print(header)
+        # Print a line of dashes exactly matching the length of the header
+        print("-" * len(header))
+
         # Loop through the list of Category objects we collected
         for data in categoryObjectList:
-            # Print the ID and description using the getter methods defined in the class
-            print(data.get_code(), " ", data.get_description())
+            # Print the data using the same spacing markers as the header to keep columns aligned
+            # get_title() is added here to populate the new Title column
+            print(f"{data.get_code():<5} {data.get_title():<20} {data.get_description()}")
             
     except FileNotFoundError:
         print("Error: 'mobile_products.csv' file not found.")
 
-# --- User Interface and Authentication (Main Loop) ---
+# User Interface and Authentication (Main Loop)
 
 # This loop runs continuously until the user decides to exit
 while True:
