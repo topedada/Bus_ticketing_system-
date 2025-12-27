@@ -1,5 +1,6 @@
 import csv
 import sys # Import the sys module to allow for clean exiting of the program
+basket = [] #this hold the ticket that the users want to buy
 
 # Class Definition 
 # This class defines how to store each category's data cleanly
@@ -27,6 +28,20 @@ class Category:
     def get_price(self):
         return self.price 
 
+def buy_ticket(item):
+    basket.append(item)
+    print(f"\n'{item}' has been added to your basket.")
+
+def view_basket():
+    print("\n-- Your Basket ---")
+
+    if not basket:
+        print("your basket is currenctly empty.")
+        return
+
+    for index, item in enumerate(basket):
+        print(f"{index + 1}. {item}")
+    
 # Main Program Logic Function (Guest Mode)
 # This function handles the core logic of reading the file and printing categories
 def view_categories():
@@ -96,6 +111,15 @@ def buy_ticket():
         # Placeholder message for future top-up integration
         print("\n(Top-Up options will be added after merging the top-up branch.)")
 
+        placeholder_ticket = f"Category {category_id} Ticket (Placeholder)"
+
+        confirm = input(f"\nWould you like to add '{placeholder_ticket}' to your basket? (yes/no): ")
+
+        if confirm.lower() == "yes":
+            add_to_basket(placeholder_ticket)
+        else:
+            print("no probelm, returning to the menu")
+                  
     except ValueError:
         # Handle non-integer input
         print("Invalid input. Please enter a number.")
@@ -107,9 +131,10 @@ while True:
     print("1. Guest Mode")
     print("2. Administrator Mode")
     print("3. Exit Program")
+    print("3. View Basket")
     
     # Get user input
-    choice = input("Enter your choice (1, 2, or 3): ")
+    choice = input("Enter your choice (1, 2, 3 or 4): ")
 
     if choice == '1':
         # Run the buy_ticket function instead of just viewing categories
@@ -128,8 +153,9 @@ while True:
     elif choice == '3':
         # Stop the entire program completely using the sys module
         print("Exiting program.")
-        sys.exit() 
-        
+        sys.exit()
+    elif choice == "4":
+        view_basket()     
     else:
         # Handle invalid input gracefully
         print("\nInvalid choice. Please enter 1, 2, or 3.")
