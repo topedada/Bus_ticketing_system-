@@ -7,11 +7,10 @@ basket = [] #this hold the ticket that the users want to buy
 class Category:
     # __init__ is the constructor that runs when a new object is created
     # 'self' refers to the specific instance of the object being created
-    def __init__(self, code, title, desc, price):
+    def __init__(self, code, title, desc):
         self.code = code
         self.title = title
         self.description = desc
-        self.price = price
 
     # Method to retrieve the category code
     def get_code(self):
@@ -25,20 +24,20 @@ class Category:
     def get_description(self):
         return self.description
 
-    def get_price(self):
-        return self.price 
-
 def add_to_basket(item):
+    # Append the item to the user's basket
     basket.append(item)
     print(f"\n'{item}' has been added to your basket.")
 
 def view_basket():
     print("\n-- Your Basket ---")
 
+    # Check if basket is empty
     if not basket:
         print("your basket is currenctly empty.")
         return
 
+    # Loop through basket items and display them
     for index, item in enumerate(basket):
         print(f"{index + 1}. {item}")
     
@@ -66,7 +65,7 @@ def view_categories():
                     categoryList.append(line["category_title"])
                     
                     # Create a new Category object with data from the current row
-                    thisCat = Category(code, line["category_title"], line["category_description"],float(line.get("category_price", 0)))
+                    thisCat = Category(code, line["category_title"], line["category_description"])
                     
                     # Add the new object instance to our main object list
                     categoryObjectList.append(thisCat)
@@ -76,7 +75,7 @@ def view_categories():
 
         # Tabular Formatting
         # This line defines and prints the headers with specific column widths 
-        header = f"| {'ID':<5} | {'Category Title':<25} | {'Category Description':<40} | {'Price':<8} |"
+        header = f"| {'ID':<5} | {'Category Title':<25} | {'Category Description':<40} "
         print(header)
         # This line adds a separator based on the header length
         print("-" * len(header))
@@ -84,9 +83,7 @@ def view_categories():
         # Loop through the list of Category objects we collected
         for data in categoryObjectList:
             # Print the data using the same spacing markers as the header to keep columns aligned
-            # get_title() is added here to populate the new Title column
-            print(f"| {data.get_code():<5} | {data.get_title():<25} | {data.get_description():<40} | ${data.get_price():<7.2f}")
-
+            print(f"| {data.get_code():<5} | {data.get_title():<25} | {data.get_description():<40} ")
             
     except FileNotFoundError:
         # Handle missing CSV file gracefully
@@ -111,8 +108,10 @@ def buy_ticket():
         # Placeholder message for future top-up integration
         print("\n(Top-Up options will be added after merging the top-up branch.)")
 
+        # Create a placeholder ticket string for the basket
         placeholder_ticket = f"Category {category_id} Ticket (Placeholder)"
 
+        # Ask user if they want to add the ticket to their basket
         confirm = input(f"\nWould you like to add '{placeholder_ticket}' to your basket? (yes/no): ")
 
         if confirm.lower() == "yes":
@@ -131,7 +130,7 @@ while True:
     print("1. Guest Mode")
     print("2. Administrator Mode")
     print("3. Exit Program")
-    print("3. View Basket")
+    print("4. View Basket")
     
     # Get user input
     choice = input("Enter your choice (1, 2, 3 or 4): ")
@@ -155,7 +154,8 @@ while True:
         print("Exiting program.")
         sys.exit()
     elif choice == "4":
+        # Show the user's basket contents
         view_basket()     
     else:
         # Handle invalid input gracefully
-        print("\nInvalid choice. Please enter 1, 2, or 3.")
+        print("\nInvalid choice. Please enter 1, 2, 3 or 4.")
