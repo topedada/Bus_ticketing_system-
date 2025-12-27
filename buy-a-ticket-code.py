@@ -28,7 +28,7 @@ class Category:
     def get_price(self):
         return self.price 
 
-def buy_ticket(item):
+def add_to_basket(item):
     basket.append(item)
     print(f"\n'{item}' has been added to your basket.")
 
