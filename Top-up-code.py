@@ -2,7 +2,7 @@ import csv  # Import the CSV module to read data from CSV files
 
 # Class to represent a single Top-Up option
 class TopUp:
-    def __init__(self, category_title, title, description, price):
+    def __init__(self, category_title, title, description, price): #class method constructure runs automatically when a new object is created from a class
         # Store the category this top-up belongs to
         self.category_title = category_title
         # Store the title/name of the top-up
@@ -12,14 +12,14 @@ class TopUp:
         # Store the price of the top-up (currently in pence from CSV)
         self.price = price
 
-    def __str__(self):
+    def __str__(self): #class method Defines how the object prints
         # Return a readable string representation of the top-up for printing
         # Example: "Extra Lesson Pack - £25.00"
         return f"{self.title} - £{self.price:.2f}"
 
 
 # Function to read all top-ups from the CSV file and return a list of TopUp objects
-def load_topups():
+def load_topups():#standalone laods all top-ups from CSV
     topups = []  # Initialize an empty list to store all top-up objects
     try:
         # Open the CSV file in read mode
@@ -48,7 +48,7 @@ def load_topups():
 
 
 # Function to display all top-ups for a specific category
-def view_topups_for_category(category_title):
+def view_topups_for_category(category_title):#standalone displays top-ups for a given category
     # Load all top-ups from the CSV file
     topups = load_topups()
 
