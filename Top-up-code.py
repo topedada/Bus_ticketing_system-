@@ -22,7 +22,7 @@ def load_topups():
                     row["category_title"],
                     row["topup_title"],
                     row["topup_description"],
-                    float(row["price"])
+                    float(row["topup_price_in_pence"])
                 )
                 topups.append(topup)
 
