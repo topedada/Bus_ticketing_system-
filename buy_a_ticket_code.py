@@ -1,18 +1,20 @@
 import csv
-import sys # Import the sys module to allow for clean exiting of the program
-basket = [] #this hold the ticket that the users want to buy
+import sys  # Import the sys module to allow for clean exiting of the program
 
-# Class Definition 
-# This class defines how to store each category's data cleanly
+basket = []  # This list holds all tickets or items that the user selects to purchase
+
+
+# Class Definition
+# This class defines how to store and manage each ticket category's data
 class Category:
-    # __init__ is the constructor that runs when a new object is created
+    # __init__ is the constructor that runs automatically when a new object is created
     # 'self' refers to the specific instance of the object being created
     def __init__(self, code, title, desc):
-        self.code = code
-        self.title = title
-        self.description = desc
+        self.code = code  # Unique ID assigned to this category
+        self.title = title  # Name or title of the category
+        self.description = desc  # Brief description of the category
 
-    # Method to retrieve the category code
+    # Method to retrieve the unique category ID
     def get_code(self):
         return self.code
 
@@ -24,138 +26,116 @@ class Category:
     def get_description(self):
         return self.description
 
+
+# Function to add an item to the user's basket
 def add_to_basket(item):
-    # Append the item to the user's basket
+    # Add the given item to the basket list
     basket.append(item)
+    # Inform the user that the item has been successfully added
     print(f"\n'{item}' has been added to your basket.")
 
+
+# Function to display all items currently in the basket
 def view_basket():
     print("\n-- Your Basket ---")
 
-    # Check if basket is empty
+    # Check if the basket is empty
     if not basket:
-        print("your basket is currenctly empty.")
+        print("Your basket is currently empty.")  # Inform user if no items
         return
 
-    # Loop through basket items and display them
+    # Loop through basket items and display them with numbering for clarity
     for index, item in enumerate(basket):
         print(f"{index + 1}. {item}")
-    
-# Main Program Logic Function (Guest Mode)
-# This function handles the core logic of reading the file and printing categories
+
+
+# Function to load and display all ticket categories from the CSV file
 def view_categories():
     print("\n--- Displaying Categories (Guest View) ---")
 
-    # Initialize lists and counter within the function scope
-    categoryList = []        # Tracks names of categories seen to avoid duplicates
-    categoryObjectList = []  # Stores the actual Category objects
-    code = 0                 # Counter for unique category IDs
+    # Initialize structures to store category information
+    categoryList = []        # Keeps track of unique category titles to avoid duplicates
+    categoryObjectList = []  # Stores actual Category objects for further use
+    code = 0                 # Counter to assign unique ID numbers to each category
 
     try:
-        # Open the CSV file in read mode and ensure it closes automatically
+        # Open the CSV file safely using 'with' to ensure closure
         with open('mobile_products.csv', mode='r') as file:
-            # Use DictReader to read rows as dictionaries (header as keys)
+            # DictReader reads each row as a dictionary with CSV headers as keys
             csvFile = csv.DictReader(file)
-            
+
             # Iterate through every row in the CSV file
-            for line in csvFile: 
-                # Check if the title is already in our tracking list
+            for line in csvFile:
+                # Only create a new category if it hasn't already been added
                 if line["category_title"] not in categoryList:
-                    # If new, add the name to the tracking list
+                    # Add the new category title to the tracking list
                     categoryList.append(line["category_title"])
-                    
-                    # Create a new Category object with data from the current row
+
+                    # Create a Category object with unique ID, title, and description
                     thisCat = Category(code, line["category_title"], line["category_description"])
-                    
-                    # Add the new object instance to our main object list
+
+                    # Add the Category object to the main object list
                     categoryObjectList.append(thisCat)
-                    
-                    # Increment the ID code for the next unique category
+
+                    # Increment the ID code for the next category
                     code += 1
 
-        # Tabular Formatting
-        # This line defines and prints the headers with specific column widths 
+        # Print a formatted table header for displaying category data
         header = f"| {'ID':<5} | {'Category Title':<25} | {'Category Description':<40} "
         print(header)
-        # This line adds a separator based on the header length
+        # Print a separator line based on header length for clarity
         print("-" * len(header))
 
-        # Loop through the list of Category objects we collected
+        # Loop through the list of Category objects and print their details
         for data in categoryObjectList:
-            # Print the data using the same spacing markers as the header to keep columns aligned
             print(f"| {data.get_code():<5} | {data.get_title():<25} | {data.get_description():<40} ")
-            
-    except FileNotFoundError:
-        # Handle missing CSV file gracefully
-        print("Error: 'mobile_products.csv' file not found.")
 
-# Updated Buy Ticket Function
-# This function allows the user to buy a ticket by first selecting a category
+        # Return the list of Category objects so that selected IDs can be mapped to titles
+        return categoryObjectList
+
+    except FileNotFoundError:
+        # Handle situation where the CSV file is missing
+        print("Error: 'mobile_products.csv' file not found.")
+        # Return empty list to prevent the program from breaking
+        return []
+
+
+# Function for the guest to buy a ticket
+# Handles category selection and prepares the selected category for top-up integration
 def buy_ticket():
     print("\n--- Buy a Ticket ---")
 
-    # First show categories using the existing function
-    view_categories()
+    # Display all available categories and get the Category objects
+    categories = view_categories()
 
-    # Ask the user which category they want
+    # If no categories were found, exit the function early
+    if not categories:
+        return None
+
     try:
-        # Prompt user for category ID
+        # Prompt the user to select a category by ID
         category_id = int(input("\nEnter the category ID you want to view: "))
 
-        # NOTE: You will connect this check to your real category list later.
-        print(f"\nYou selected category ID: {category_id}")
+        # Initialize variable to store the selected category title
+        selected_category = None
+        # Find the category title that matches the entered ID
+        for cat in categories:
+            if cat.get_code() == category_id:
+                selected_category = cat.get_title()
+                break
 
-        # Placeholder message for future top-up integration
-        print("\n(Top-Up options will be added after merging the top-up branch.)")
+        # If the category ID is invalid (not found), inform the user
+        if not selected_category:
+            print("Invalid category ID.")
+            return None
 
-        # Create a placeholder ticket string for the basket
-        placeholder_ticket = f"Category {category_id} Ticket (Placeholder)"
+        # Display the selected category for confirmation
+        print(f"\nYou selected category: {selected_category}")
 
-        # Ask user if they want to add the ticket to their basket
-        confirm = input(f"\nWould you like to add '{placeholder_ticket}' to your basket? (yes/no): ")
+        # Return the category title to use for linking with top-ups
+        return selected_category
 
-        if confirm.lower() == "yes":
-            add_to_basket(placeholder_ticket)
-        else:
-            print("no probelm, returning to the menu")
-                  
     except ValueError:
-        # Handle non-integer input
+        # Handle the case where user input is not an integer
         print("Invalid input. Please enter a number.")
-
-# User Interface and Authentication (Main Loop)
-# This loop runs continuously until the user decides to exit
-while True:
-    print("\n--- Main Menu ---")
-    print("1. Guest Mode")
-    print("2. Administrator Mode")
-    print("3. Exit Program")
-    print("4. View Basket")
-    
-    # Get user input
-    choice = input("Enter your choice (1, 2, 3 or 4): ")
-
-    if choice == '1':
-        # Run the buy_ticket function instead of just viewing categories
-        buy_ticket()
-        
-    elif choice == '2':
-        # Prompt for password if admin is chosen
-        password = input("Enter administrator password: ")
-        # Check against the required password
-        if password == "password01":
-            print("\n*** Access Granted: Administrator ***")
-            # Admin-specific functions can go here
-        else:
-            print("\nAccess Denied: Incorrect password.")
-            
-    elif choice == '3':
-        # Stop the entire program completely using the sys module
-        print("Exiting program.")
-        sys.exit()
-    elif choice == "4":
-        # Show the user's basket contents
-        view_basket()     
-    else:
-        # Handle invalid input gracefully
-        print("\nInvalid choice. Please enter 1, 2, 3 or 4.")
+        return None
