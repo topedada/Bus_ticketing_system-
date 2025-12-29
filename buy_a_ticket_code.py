@@ -88,9 +88,12 @@ def view_categories():
             # Print the data using the same spacing markers as the header to keep columns aligned
             print(f"| {data.get_code():<5} | {data.get_title():<25} | {data.get_description():<40} ")
 
+        return categoryObjectList  # Return list to map ID to title
+
     except FileNotFoundError:
         # Handle missing CSV file gracefully
         print("Error: 'mobile_products.csv' file not found.")
+        return []
 
 
 # Updated Buy Ticket Function
@@ -99,29 +102,30 @@ def buy_ticket():
     print("\n--- Buy a Ticket ---")
 
     # First show categories using the existing function
-    view_categories()
+    categories = view_categories()
+
+    if not categories:
+        return None  # Exit if no categories found
 
     try:
         # Prompt user for category ID
         category_id = int(input("\nEnter the category ID you want to view: "))
 
-        # Display selected category
-        print(f"\nYou selected category ID: {category_id}")
+        # Find the category title based on the ID
+        selected_category = None
+        for cat in categories:
+            if cat.get_code() == category_id:
+                selected_category = cat.get_title()
+                break
 
-        # Create a placeholder ticket string for the basket
-        placeholder_ticket = f"Category {category_id} Ticket (Placeholder)"
+        if not selected_category:
+            print("Invalid category ID.")
+            return None
 
-        # Ask user if they want to add the ticket to their basket
-        confirm = input(f"\nWould you like to add '{placeholder_ticket}' to your basket? (yes/no): ")
-
-        if confirm.lower() == "yes":
-            add_to_basket(placeholder_ticket)
-        else:
-            print("no problem, returning to the menu")
-
-        return category_id  # Return the selected category ID for top-ups
+        print(f"\nYou selected category: {selected_category}")
+        return selected_category  # <-- Return the category title for top-ups
 
     except ValueError:
         # Handle non-integer input
         print("Invalid input. Please enter a number.")
-        return None  # Prevents errors when input fails
+        return None
