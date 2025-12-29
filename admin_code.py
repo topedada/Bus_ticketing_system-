@@ -14,7 +14,7 @@ def load_categories():
 # Save the list of categories back to the CSV file
 def save_categories(data):
     fieldnames = ['category_title', 'category_description', 'topup_title', 'topup_description', 'topup_price_in_pence']
-    with open('mobile_products.csv', mode='w', newline='') as file:
+    with open('mobile_products.csv', mode='a', newline='') as file:
         writer = csv.DictWriter(file, fieldnames=fieldnames)
         writer.writeheader()
         writer.writerows(data)
