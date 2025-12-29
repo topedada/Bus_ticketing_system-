@@ -105,11 +105,8 @@ def buy_ticket():
         # Prompt user for category ID
         category_id = int(input("\nEnter the category ID you want to view: "))
 
-        # NOTE: You will connect this check to your real category list later.
+        # Display selected category
         print(f"\nYou selected category ID: {category_id}")
-
-        # Placeholder message for future top-up integration
-        print("\n(Top-Up options will be added after merging the top-up branch.)")
 
         # Create a placeholder ticket string for the basket
         placeholder_ticket = f"Category {category_id} Ticket (Placeholder)"
@@ -122,49 +119,9 @@ def buy_ticket():
         else:
             print("no problem, returning to the menu")
 
-        return category_id  # <-- FIXED: return now correctly inside the try block
+        return category_id  # Return the selected category ID for top-ups
 
     except ValueError:
         # Handle non-integer input
         print("Invalid input. Please enter a number.")
-        return None  # <-- FIXED: prevents errors when input fails
-
-
-# User Interface and Authentication (Main Loop)
-# This loop runs continuously until the user decides to exit
-while True:
-    print("\n--- Main Menu ---")
-    print("1. Guest Mode")
-    print("2. Administrator Mode")
-    print("3. Exit Program")
-    print("4. View Basket")
-
-    # Get user input
-    choice = input("Enter your choice (1, 2, 3 or 4): ")
-
-    if choice == '1':
-        # Run the buy_ticket function instead of just viewing categories
-        buy_ticket()
-
-    elif choice == '2':
-        # Prompt for password if admin is chosen
-        password = input("Enter administrator password: ")
-        # Check against the required password
-        if password == "password01":
-            print("\n*** Access Granted: Administrator ***")
-            # Admin-specific functions can go here
-        else:
-            print("\nAccess Denied: Incorrect password.")
-
-    elif choice == '3':
-        # Stop the entire program completely using the sys module
-        print("Exiting program.")
-        sys.exit()
-
-    elif choice == "4":
-        # Show the user's basket contents
-        view_basket()
-
-    else:
-        # Handle invalid input gracefully
-        print("\nInvalid choice. Please enter 1, 2, 3 or 4.")
+        return None  # Prevents errors when input fails
