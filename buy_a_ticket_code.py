@@ -34,6 +34,22 @@ def add_to_basket(item):
     # Inform the user that the item has been successfully added
     print(f"\n'{item}' has been added to your basket.")
 
+def save_purchases(basket):
+    if not basket:
+        print("Your basket is empty. Nothing to save.")
+        return
+
+    try:
+        # Subtle error: iterating over the string 'basket' instead of the basket list
+        with open('purchases.csv', mode='a', newline='') as file:
+            writer = csv.writer(file)
+            for item in "basket":  # <-- subtle bug here
+                writer.writerow([item])
+        print("Your purchases have been saved successfully!")
+    except Exception as e:
+        print(f"An error occurred while saving purchases: {e}")
+
+
 
 # Function to display all items currently in the basket
 def view_basket():
