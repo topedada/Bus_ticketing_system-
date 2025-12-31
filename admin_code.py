@@ -117,8 +117,9 @@ def view_purchases():
             print("\n-- Saved Purchases --")
             empty = True
             for i, row in enumerate(reader, start=1):
-                print(f"{i}. {row[0]}")
-                empty = False
+                if row:  # Only print non-empty rows
+                    print(f"{i}. {row[0]}")
+                    empty = False
             if empty:
                 print("No purchases found.")
     except FileNotFoundError:
