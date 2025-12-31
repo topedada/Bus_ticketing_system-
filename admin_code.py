@@ -143,8 +143,8 @@ def admin_menu():
         elif choice == '3':
             remove_category()
         elif choice == '4':
-            view_purchases
-        else choice == '5':
+            view_purchases()
+        elif choice == '5': 
             break
         else:
             print("Invalid choice. Please enter 1-5.")
