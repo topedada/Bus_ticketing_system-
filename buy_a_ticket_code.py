@@ -35,19 +35,23 @@ def add_to_basket(item):
     print(f"\n'{item}' has been added to your basket.")
 
 def save_purchases(basket):
+    """
+    Save the current basket to 'purchases.csv'.
+    Each row contains a single purchase (ticket or top-up).
+    """
     if not basket:
         print("Your basket is empty. Nothing to save.")
         return
 
     try:
-        # Subtle error: iterating over the string 'basket' instead of the basket list
+        # Open purchases.csv in append mode so we don't overwrite previous purchases
         with open('purchases.csv', mode='a', newline='') as file:
             writer = csv.writer(file)
-            for item in "basket":  # <-- subtle bug here
-                writer.writerow([item])
+            for item in basket:
+                writer.writerow([item])  # Save each item as a new row
         print("Your purchases have been saved successfully!")
     except Exception as e:
-        print(f"An error occurred while saving purchases: {e}")
+        print(f"Error saving purchases: {e}")
 
 
 
