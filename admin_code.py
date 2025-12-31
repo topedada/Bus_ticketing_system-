@@ -107,7 +107,23 @@ def remove_category():
         save_categories(new_data)  # Save updated list safely
         print(f"Category '{title}' and its top-ups removed successfully.")
 
-
+def view_purchases():
+    """
+    Allows admin to view all saved purchases from 'purchases.csv'.
+    """
+    try:
+        with open('purchases.csv', mode='r', newline='') as file:
+            reader = csv.reader(file)
+            print("\n-- Saved Purchases --")
+            empty = True
+            for i, row in enumerate(reader, start=1):
+                print(f"{i}. {row[0]}")
+                empty = False
+            if empty:
+                print("No purchases found.")
+    except FileNotFoundError:
+        print("No purchases CSV found. No purchases have been saved yet.")
+        
 # Admin Menu Loop
 def admin_menu():
     while True:
@@ -115,7 +131,9 @@ def admin_menu():
         print("1. View Categories")
         print("2. Add Category")
         print("3. Remove Category")
-        print("4. Exit Admin Menu")
+        print("4. View Purchases")
+        print("5. Exit Admin Menu")
+        
 
         choice = input("Enter your choice: ")
         if choice == '1':
@@ -125,6 +143,8 @@ def admin_menu():
         elif choice == '3':
             remove_category()
         elif choice == '4':
+            view_purchases
+        else choice == '5':
             break
         else:
-            print("Invalid choice. Please enter 1-4.")
+            print("Invalid choice. Please enter 1-5.")
