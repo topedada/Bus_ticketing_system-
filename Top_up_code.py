@@ -1,5 +1,6 @@
 import csv  # Import the CSV module to read data from CSV files
 
+
 # Class to represent a single Top-Up option
 class TopUp:
     # Constructor that runs automatically when a new object is created
@@ -47,38 +48,40 @@ def load_topups():
 
 
 # Function to display all top-ups for a specific category and allow user selection
-def view_topups_for_category(category_title):
+def view_topups_for_category(category_title, basket):
     # Load all top-ups from CSV
     topups = load_topups()
 
-    # Print a header showing which category we are displaying
-    print(f"\n-- Top-Ups for {category_title} --")
-
-    # Filter the top-ups to only include those matching the given category
+    # Filter top-ups to only this category
     matching = [t for t in topups if t.category_title == category_title]
 
-    # Inform the user if no top-ups are available
     if not matching:
         print("No top-ups available for this category yet.")
         return None
 
-    # Display each matching top-up with numbering and description
+    print(f"\n-- Top-Ups for {category_title} --")
     for index, topup in enumerate(matching):
-        # Use the __str__ method of TopUp, which shows price in pounds
-        print(f"{index + 1}. {str(topup)}")
+        # Convert pence → pounds for display
+        price_in_pounds = topup.price / 100
+        print(f"{index + 1}. {topup.title} - £{price_in_pounds:.2f}")
         print(f"    {topup.description}")
 
-    # Prompt the user to select a top-up from the list
+    # Ask user which top-up to select
     try:
         choice = int(input("\nEnter the number of the Top-Up you want to add: "))
-        # Validate the choice is within range
         if 1 <= choice <= len(matching):
-            selected_topup = matching[choice - 1]  # Get the selected TopUp object
-            return selected_topup                     # Return the selection for further processing
+            selected_topup = matching[choice - 1]
+
+            # Add to basket in pounds
+            basket_entry = f"{selected_topup.title} - £{selected_topup.price / 100:.2f}"
+            basket.append(basket_entry)
+            print(f"\n'{basket_entry}' has been added to your basket.")  # Notification in pounds
+
+            return selected_topup
         else:
             print("Invalid choice.")
             return None
     except ValueError:
-        # Handle non-integer input gracefully
         print("Invalid input.")
         return None
+
