@@ -8,12 +8,14 @@ class TopUp:
         self.category_title = category_title  # The category this top-up belongs to
         self.title = title                      # Name/title of the top-up
         self.description = description          # Description of the top-up
-        self.price = price                      # Price of the top-up (currently in pence)
+        self.price = price                      # Price of the top-up (stored in pence)
 
     # Method to define how the TopUp object should be represented as a string
     def __str__(self):
+        # Convert pence to pounds for guest view when printing
+        price_in_pounds = self.price / 100
         # Format the title and price neatly for printing
-        return f"{self.title} - £{self.price:.2f}"
+        return f"{self.title} - £{price_in_pounds:.2f}"
 
 
 # Function to read all top-ups from the CSV file and return a list of TopUp objects
@@ -28,10 +30,10 @@ def load_topups():
             # Loop through each row of the CSV to create TopUp objects
             for row in reader:
                 topup = TopUp(
-                    row["category_title"],           # Assign category from CSV
-                    row["topup_title"],              # Assign title from CSV
-                    row["topup_description"],        # Assign description from CSV
-                    float(row["topup_price_in_pence"])  # Convert price to float
+                    row["category_title"],               # Assign category from CSV
+                    row["topup_title"],                  # Assign title from CSV
+                    row["topup_description"],            # Assign description from CSV
+                    float(row["topup_price_in_pence"])   # Convert price to float (still in pence)
                 )
                 # Add the TopUp object to the list
                 topups.append(topup)
@@ -62,7 +64,8 @@ def view_topups_for_category(category_title):
 
     # Display each matching top-up with numbering and description
     for index, topup in enumerate(matching):
-        print(f"{index + 1}. {topup.title} - £{topup.price:.2f}")
+        # Use the __str__ method of TopUp, which shows price in pounds
+        print(f"{index + 1}. {str(topup)}")
         print(f"    {topup.description}")
 
     # Prompt the user to select a top-up from the list
