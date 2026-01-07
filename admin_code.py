@@ -12,7 +12,7 @@ def load_categories():
         print("CSV file not found. Starting with empty list.")
         return []
 
-# THIS VERSION IS SAFE – IT NEVER DELETES DATA BY ACCIDENT
+
 def save_categories(data):
     # Use ALL the fieldnames that your CSV file contains
     fieldnames = [
@@ -124,6 +124,46 @@ def view_purchases():
                 print("No purchases found.")
     except FileNotFoundError:
         print("No purchases CSV found. No purchases have been saved yet.")
+
+def edit_ticket_price():
+    data = load_categories()
+
+    if not data:
+        print("No data found.")
+        return
+
+    print("\n--- Ticket & Prices ---")
+    for i, row in enumerate(data):
+        if row['topup_title']:
+            price = row['topup_price_in_pence']
+            print(f"{i}. {row['topup_title']} - {price} pence")
+
+    try:
+        index = int(input("\nEnter the number of the ticket to edit: "))
+
+        if index < 0 or index >= len(data):
+            print("Invalid selection.")
+            return
+
+        selected = data[index]
+
+        if not selected['topup_title']:
+            print("Selected row has no ticket.")
+            return
+
+        new_price = input("Enter new price in pence: ").strip()
+
+        if not new_price.isdigit():
+            print("Price must be a number.")
+            return
+
+        selected['topup_price_in_pence'] = new_price
+        save_categories(data)
+
+        print(f"Price updated successfully for '{selected['topup_title']}'.")
+
+    except ValueError:
+        print("Invalid input.")
         
 # Admin Menu Loop
 def admin_menu():
@@ -133,7 +173,8 @@ def admin_menu():
         print("2. Add Category")
         print("3. Remove Category")
         print("4. View Purchases")
-        print("5. Exit Admin Menu")
+        print("5. Edit Ticket Price")
+        print("6. Exit Admin Menu")
         
 
         choice = input("Enter your choice: ")
@@ -145,7 +186,9 @@ def admin_menu():
             remove_category()
         elif choice == '4':
             view_purchases()
-        elif choice == '5': 
+        elif choice == '5':
+            edit_ticket_price()
+        elif choice == '6': 
             break
         else:
-            print("Invalid choice. Please enter 1-5.")
+            print("Invalid choice. Please enter 1-6.")
