@@ -60,14 +60,25 @@ def save_purchases(basket):
 def view_basket():
     print("\n-- Your Basket ---")
 
-    # Check if the basket is empty
     if not basket:
-        print("Your basket is currently empty.")  # Inform user if no items
+        print("Your basket is currently empty.")
         return
 
-    # Loop through basket items and display them with numbering for clarity
+    total = 0.0  # Total in pounds
+
     for index, item in enumerate(basket):
         print(f"{index + 1}. {item}")
+
+        # Extract price from string (e.g. "Ticket - £4.50")
+        if "£" in item:
+            try:
+                price = float(item.split("£")[1])
+                total += price
+            except ValueError:
+                pass
+
+    print("\n------------------")
+    print(f"Total: £{total:.2f}")
 
 
 # Function to load and display all ticket categories from the CSV file
