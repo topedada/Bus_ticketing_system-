@@ -59,21 +59,22 @@ def view_topups_for_category(category_title, basket):
         print("No top-ups available for this category yet.")
         return None
 
+    print(f"\n-- Top-Ups for {category_title} --")
+
+    # Display top-ups ONCE (prices shown in pounds)
+    for index, topup in enumerate(matching):
+        price_in_pounds = topup.price / 100
+        print(f"{index + 1}. {topup.title} - £{price_in_pounds:.2f}")
+        print(f"    {topup.description}")
+
+    # Loop only for user input
     while True:
-        print(f"\n-- Top-Ups for {category_title} --")
-
-        # Display top-ups in pounds
-        for index, topup in enumerate(matching):
-            price_in_pounds = topup.price / 100
-            print(f"{index + 1}. {topup.title} - £{price_in_pounds:.2f}")
-            print(f"    {topup.description}")
-
         print("\nEnter a number to add a ticket to your basket")
         print("Press 'q' to return to the main menu")
 
         choice = input("Your choice: ").lower()
 
-        # Exit loop and return to main menu
+        # Exit back to main menu
         if choice == "q":
             return None
 
@@ -86,7 +87,6 @@ def view_topups_for_category(category_title, basket):
                 basket.append(basket_entry)
 
                 print(f"\n'{basket_entry}' has been added to your basket.")
-
             else:
                 print("Invalid choice.")
 
