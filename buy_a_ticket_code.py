@@ -58,27 +58,38 @@ def save_purchases(basket):
 
 # Function to display all items currently in the basket
 def view_basket():
-    print("\n-- Your Basket ---")
+    print("\n-- Your Basket --")
 
     if not basket:
         print("Your basket is currently empty.")
         return
 
-    total = 0.0  # Total in pounds
+    total = 0.0
 
-    for index, item in enumerate(basket):
-        print(f"{index + 1}. {item}")
+    for index, item in enumerate(basket, start=1):
+        print(f"{index}. {item}")
 
-        # Extract price from string (e.g. "Ticket - £4.50")
+        # Extract price from string (after £)
         if "£" in item:
-            try:
-                price = float(item.split("£")[1])
-                total += price
-            except ValueError:
-                pass
+            price = float(item.split("£")[1])
+            total += price
 
-    print("\n------------------")
-    print(f"Total: £{total:.2f}")
+    print(f"\nTotal: £{total:.2f}")
+
+    choice = input("\nEnter item number to remove (or press Enter to continue): ")
+
+    if choice == "":
+        return
+
+    try:
+        index = int(choice) - 1
+        if 0 <= index < len(basket):
+            removed = basket.pop(index)
+            print(f"\n'{removed}' removed from basket.")
+        else:
+            print("Invalid item number.")
+    except ValueError:
+        print("Invalid input.")
 
 
 # Function to load and display all ticket categories from the CSV file
