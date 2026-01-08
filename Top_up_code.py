@@ -59,29 +59,37 @@ def view_topups_for_category(category_title, basket):
         print("No top-ups available for this category yet.")
         return None
 
-    print(f"\n-- Top-Ups for {category_title} --")
-    for index, topup in enumerate(matching):
-        # Convert pence → pounds for display
-        price_in_pounds = topup.price / 100
-        print(f"{index + 1}. {topup.title} - £{price_in_pounds:.2f}")
-        print(f"    {topup.description}")
+    while True:
+        print(f"\n-- Top-Ups for {category_title} --")
 
-    # Ask user which top-up to select
-    try:
-        choice = int(input("\nEnter the number of the Top-Up you want to add: "))
-        if 1 <= choice <= len(matching):
-            selected_topup = matching[choice - 1]
+        # Display top-ups in pounds
+        for index, topup in enumerate(matching):
+            price_in_pounds = topup.price / 100
+            print(f"{index + 1}. {topup.title} - £{price_in_pounds:.2f}")
+            print(f"    {topup.description}")
 
-            # Add to basket in pounds
-            basket_entry = f"{selected_topup.title} - £{selected_topup.price / 100:.2f}"
-            basket.append(basket_entry)
-            print(f"\n'{basket_entry}' has been added to your basket.")  # Notification in pounds
+        print("\nEnter a number to add a ticket to your basket")
+        print("Press 'q' to return to the main menu")
 
-            return selected_topup
-        else:
-            print("Invalid choice.")
+        choice = input("Your choice: ").lower()
+
+        # Exit loop and return to main menu
+        if choice == "q":
             return None
-    except ValueError:
-        print("Invalid input.")
-        return None
+
+        try:
+            choice = int(choice)
+            if 1 <= choice <= len(matching):
+                selected_topup = matching[choice - 1]
+
+                basket_entry = f"{selected_topup.title} - £{selected_topup.price / 100:.2f}"
+                basket.append(basket_entry)
+
+                print(f"\n'{basket_entry}' has been added to your basket.")
+
+            else:
+                print("Invalid choice.")
+
+        except ValueError:
+            print("Invalid input. Please enter a number or 'q'.")
 
