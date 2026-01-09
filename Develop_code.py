@@ -10,7 +10,7 @@ while True:
     print("2. Administrator Mode")
     print("3. Exit Program")
     print("4. View Basket")
-    print("5. Save Purchases")
+    print("5. Confirm Purchases")
 
     choice = input("Enter your choice: ")
 

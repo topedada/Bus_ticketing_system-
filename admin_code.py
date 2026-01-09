@@ -1,5 +1,6 @@
 import csv  # Import CSV module to read/write CSV files
-import random 
+import random
+
 
 
 def generate_default_topups(category_title, category_description, count=3):
@@ -130,8 +131,10 @@ def remove_category():
 
 def view_purchases():
     """
-    Allows admin to view all saved purchases from 'purchases.csv'.
+    Allows admin to view all saved purchases from 'purchases.csv' and shows the total.
     """
+    total = 0.0  # Initialize total in pounds
+
     try:
         with open('purchases.csv', mode='r', newline='') as file:
             reader = csv.reader(file)
@@ -141,10 +144,24 @@ def view_purchases():
                 if row:  # Only print non-empty rows
                     print(f"{i}. {row[0]}")
                     empty = False
+
+                    # Extract price from string like "Ticket Name - £5.00"
+                    try:
+                        price_str = row[0].split("£")[-1]  # Get "5.00"
+                        price = float(price_str)
+                        total += price
+                    except (IndexError, ValueError):
+                        # Skip if price not found or invalid
+                        pass
+
             if empty:
                 print("No purchases found.")
+            else:
+                print(f"\nTotal of all purchases: £{total:.2f}")
+
     except FileNotFoundError:
         print("No purchases CSV found. No purchases have been saved yet.")
+
 
 def edit_ticket_price():
     data = load_categories()

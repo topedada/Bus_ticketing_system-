@@ -1,6 +1,6 @@
 import csv
 import sys  # Import the sys module to allow for clean exiting of the program
-from Top_up_code import view_topups_for_category
+
 
 basket = []  # This list holds all tickets or items that the user selects to purchase
 
@@ -51,6 +51,8 @@ def save_purchases(basket):
             for item in basket:
                 writer.writerow([item])  # Save each item as a new row
         print("Your purchases have been saved successfully!")
+        basket.clear()
+        print("Basket has been Cleared")
     except Exception as e:
         print(f"Error saving purchases: {e}")
 
@@ -65,7 +67,8 @@ def view_basket():
         return
 
     total = 0.0
-
+    print("----RECEIPT----")
+    
     for index, item in enumerate(basket, start=1):
         print(f"{index}. {item}")
 
@@ -73,7 +76,8 @@ def view_basket():
         if "£" in item:
             price = float(item.split("£")[1])
             total += price
-
+            
+    print("---------------") 
     print(f"\nTotal: £{total:.2f}")
 
     choice = input("\nEnter item number to remove (or press Enter to continue): ")
