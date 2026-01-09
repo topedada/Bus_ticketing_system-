@@ -2,37 +2,42 @@ import csv  # Import CSV module to read/write CSV files
 import random 
 
 
-def generate_default_topup(category_title, category_description):
+def generate_default_topups(category_title, category_description, count=3):
     """
-    Creates a randomized default top-up so new categories always work.
+    Creates multiple randomized default top-ups for a new category.
     """
-    titles = ["Standard Ticket", "Basic Pass", "Starter Ticket"]
+    titles = ["Standard Ticket", "Basic Pass", "Starter Ticket", "Flex Pass", "Saver Ticket"]
     descriptions = [
         "Default ticket for this category",
         "Standard travel pass",
-        "Introductory ticket option"
+        "Introductory ticket option",
+        "Flexible travel option",
+        "Best value ticket"
     ]
 
-    return {
-        'category_id': '',
-        'category_title': category_title,
-        'category_description': category_description,
-        'topup_id': '',
-        'topup_title': random.choice(titles),
-        'topup_description': random.choice(descriptions),
-        'topup_price_in_pence': str(random.randint(500, 25000)),  # £5–£250
-        'topup_entitlement_type': '',
-        'topup_entitlement_value': '',
-        'topup_entitlement_unit': '',
-        'topup_entitlement_quantity': '',
-        'topup_entitlement_start_date': '',
-        'topup_entitlement_end_date': '',
-        'topup_passenger_class_id': '',
-        'topup_passenger_class_name': '',
-        'topup_passenger_class_quantity': ''
-    }
+    topups = []
 
+    for _ in range(count):
+        topups.append({
+            'category_id': '',
+            'category_title': category_title,
+            'category_description': category_description,
+            'topup_id': '',
+            'topup_title': random.choice(titles),
+            'topup_description': random.choice(descriptions),
+            'topup_price_in_pence': str(random.randint(500, 2500)),  # £5–£25
+            'topup_entitlement_type': '',
+            'topup_entitlement_value': '',
+            'topup_entitlement_unit': '',
+            'topup_entitlement_quantity': '',
+            'topup_entitlement_start_date': '',
+            'topup_entitlement_end_date': '',
+            'topup_passenger_class_id': '',
+            'topup_passenger_class_name': '',
+            'topup_passenger_class_quantity': ''
+        })
 
+    return topups
 
 
 # Load all categories and their top-ups from the CSV file
@@ -97,12 +102,14 @@ def add_category():
     data = load_categories()
 
     # Generate a safe default top-up automatically
-    new_row = generate_default_topup(title, description)
+    # Generate multiple default top-ups
+    new_topups = generate_default_topups(title, description, count=5)
 
-    data.append(new_row)
+    data.extend(new_topups)
     save_categories(data)
 
-    print(f"Category '{title}' added successfully with a default ticket.")
+    print(f"Category '{title}' added successfully with {len(new_topups)} default tickets.")
+
 
 
 # Remove a category and all its associated top-ups
