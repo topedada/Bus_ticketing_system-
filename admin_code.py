@@ -131,9 +131,12 @@ def remove_category():
 
 def view_purchases():
     """
-    Allows admin to view all saved purchases from 'purchases.csv' and shows the total.
+    Allows admin to view all saved purchases from 'purchases.csv',
+    shows total tickets sold, total revenue (overall), and per-ticket breakdown.
     """
-    total = 0.0  # Initialize total in pounds
+    total_revenue = 0         # Overall revenue in pounds
+    total_tickets_sold = 0    # Total number of tickets sold
+    ticket_summary = {}       # Dictionary to store counts and revenue per ticket type
 
     try:
         with open('purchases.csv', mode='r', newline='') as file:
@@ -142,25 +145,46 @@ def view_purchases():
             empty = True
             for i, row in enumerate(reader, start=1):
                 if row:  # Only print non-empty rows
-                    print(f"{i}. {row[0]}")
                     empty = False
+                    entry = row[0]  # Example: "Group Rider - £5.00"
+                    print(f"{i}. {entry}")
 
-                    # Extract price from string like "Ticket Name - £5.00"
+                    # Extract ticket name and price
                     try:
-                        price_str = row[0].split("£")[-1]  # Get "5.00"
-                        price = float(price_str)
-                        total += price
-                    except (IndexError, ValueError):
-                        # Skip if price not found or invalid
-                        pass
+                        ticket_name, price_str = entry.split(" - £")
+                        ticket_name = ticket_name.strip()
+                        price = float(price_str.strip())
+                    except ValueError:
+                        # Skip malformed rows
+                        continue
+
+                    total_revenue += price
+                    total_tickets_sold += 1
+
+                    # Count and revenue per ticket type
+                    if ticket_name in ticket_summary:
+                        ticket_summary[ticket_name]['count'] += 1
+                        ticket_summary[ticket_name]['revenue'] += price
+                    else:
+                        ticket_summary[ticket_name] = {'count': 1, 'revenue': price}
 
             if empty:
                 print("No purchases found.")
             else:
-                print(f"\nTotal of all purchases: £{total:.2f}")
+                # Print overall stats
+                print(f"\nTotal Tickets Sold: {total_tickets_sold}")
+                print(f"Overall Revenue: £{total_revenue:.2f}")
+
+                # Print per-ticket summary
+                print("\n-- Tickets Sold per Type --")
+                for ticket, data in ticket_summary.items():
+                    print(f"{ticket}: {data['count']} sold, £{data['revenue']:.2f} total")
 
     except FileNotFoundError:
         print("No purchases CSV found. No purchases have been saved yet.")
+
+
+
 
 
 def edit_ticket_price():
