@@ -12,3 +12,18 @@
 ### Postconditions:
 - Ticket is created and associated with customers
 - Confirmation message is shown
+
+
+# Class Diagram
++--------------------+
+|     Category       |
++--------------------+
+| - code : int       |
+| - title : str      |
+| - description: str |
++--------------------+
+| + __init__(code,title,desc) |
+| + get_code() : int          |
+| + get_title() : str         |
+| + get_description() : str   |
++--------------------+
