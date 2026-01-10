@@ -16,14 +16,13 @@
 
 # Class Diagram
 +--------------------+
-|     Category       |
+|    CategoryClass   |
 +--------------------+
-| - code : int       |
-| - title : str      |
-| - description: str |
-+--------------------+
-| + __init__(code,title,desc) |
-| + get_code() : int          |
-| + get_title() : str         |
-| + get_description() : str   |
-+--------------------+
+- code : int       
+- title : str      
+- description: str 
+  
++ __init__(code,title,desc) 
++ get_code() : int          
++ get_title() : str         
++ get_description() : str   
