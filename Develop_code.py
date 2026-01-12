@@ -1,5 +1,5 @@
-import csv
-from buy_a_ticket_code import buy_ticket, view_basket, basket, save_purchases
+import csv#opens the csv 
+from buy_a_ticket_code import buy_ticket, view_basket, basket, save_purchases#import functions from buy a ticket 
 from Top_up_code import view_topups_for_category
 from admin_code import admin_menu  # Admin functions like add/remove categories
 
